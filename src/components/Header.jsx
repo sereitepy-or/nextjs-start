@@ -18,10 +18,9 @@ function useUserSession(initialUser) {
       } else {
         await deleteCookie("__session");
       }
-      if (initialUser?.uid === user?.uid) {
-        return;
-      }
-      window.location.reload();
+
+      // ✅ REMOVE reload (VERY IMPORTANT)
+      // window.location.reload();
     });
   }, [initialUser]);
 
@@ -29,6 +28,8 @@ function useUserSession(initialUser) {
 }
 
 export default function Header({ initialUser }) {
+  // ✅ DISABLED auto-seeding (keep it manual only)
+  /*
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!sessionStorage.getItem("seeded")) {
@@ -37,6 +38,7 @@ export default function Header({ initialUser }) {
       }
     }
   }, []);
+  */
 
   const user = useUserSession(initialUser);
 
@@ -56,46 +58,39 @@ export default function Header({ initialUser }) {
         <img src="/friendly-eats.svg" alt="FriendlyEats" />
         Friendly Eats
       </Link>
-      {true ? (
-        <>
-          <div className="profile">
-            <p>
-              <img
-                className="profileImage"
-                src={user?.photoURL || "/profile.svg"}
-                alt={user?.email || "Guest"}
-              />
-              {user?.displayName || "Guest User"}
-            </p>
 
-            <div className="menu">
-              ...
-              <ul>
-                <li>{user.displayName}</li>
+      {/* ✅ Always render but safely */}
+      <div className="profile">
+        <p>
+          <img
+            className="profileImage"
+            src={user?.photoURL || "/profile.svg"}
+            alt={user?.email || "Guest"}
+          />
+          {user?.displayName || "Guest User"}
+        </p>
 
-                <li>
-                  <a href="#" onClick={addFakeRestaurantsAndReviews}>
-                    Add sample restaurants
-                  </a>
-                </li>
+        <div className="menu">
+          ...
+          <ul>
+            {/* ✅ FIXED */}
+            <li>{user?.displayName || "Guest User"}</li>
 
-                <li>
-                  <a href="#" onClick={handleSignOut}>
-                    Sign Out
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </>
-      ) : (
-        <div className="profile">
-          <a href="#" onClick={handleSignIn}>
-            <img src="/profile.svg" alt="A placeholder user image" />
-            Sign In with Google
-          </a>
+            {/* ✅ Still usable manually */}
+            <li>
+              <a href="#" onClick={addFakeRestaurantsAndReviews}>
+                Add sample restaurants
+              </a>
+            </li>
+
+            <li>
+              <a href="#" onClick={handleSignOut}>
+                Sign Out
+              </a>
+            </li>
+          </ul>
         </div>
-      )}
+      </div>
     </header>
   );
 }
