@@ -30,7 +30,12 @@ function useUserSession(initialUser) {
 
 export default function Header({ initialUser }) {
   useEffect(() => {
-    addFakeRestaurantsAndReviews();
+    if (typeof window !== "undefined") {
+      if (!sessionStorage.getItem("seeded")) {
+        addFakeRestaurantsAndReviews();
+        sessionStorage.setItem("seeded", "true");
+      }
+    }
   }, []);
 
   const user = useUserSession(initialUser);
@@ -57,10 +62,10 @@ export default function Header({ initialUser }) {
             <p>
               <img
                 className="profileImage"
-                src={user.photoURL || "/profile.svg"}
-                alt={user.email}
+                src={user?.photoURL || "/profile.svg"}
+                alt={user?.email || "Guest"}
               />
-              {user.displayName}
+              {user?.displayName || "Guest User"}
             </p>
 
             <div className="menu">
