@@ -37,6 +37,7 @@ export default async function Home(props) {
           <GeminiSummary restaurantId={params.id} />
         </Suspense>
       </Restaurant>
+
       <Suspense
         fallback={<ReviewsListSkeleton numReviews={restaurant.numRatings} />}
       >

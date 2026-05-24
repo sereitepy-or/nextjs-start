@@ -11,6 +11,10 @@ import { setCookie, deleteCookie } from "cookies-next";
 
 function useUserSession(initialUser) {
   useEffect(() => {
+    addFakeRestaurantsAndReviews();
+  }, []);
+
+  useEffect(() => {
     return onIdTokenChanged(async (user) => {
       if (user) {
         const idToken = await user.getIdToken();
@@ -47,7 +51,7 @@ export default function Header({ initialUser }) {
         <img src="/friendly-eats.svg" alt="FriendlyEats" />
         Friendly Eats
       </Link>
-      {user ? (
+      {true ? (
         <>
           <div className="profile">
             <p>
