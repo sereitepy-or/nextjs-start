@@ -11,10 +11,6 @@ import { setCookie, deleteCookie } from "cookies-next";
 
 function useUserSession(initialUser) {
   useEffect(() => {
-    addFakeRestaurantsAndReviews();
-  }, []);
-
-  useEffect(() => {
     return onIdTokenChanged(async (user) => {
       if (user) {
         const idToken = await user.getIdToken();
@@ -33,6 +29,10 @@ function useUserSession(initialUser) {
 }
 
 export default function Header({ initialUser }) {
+  useEffect(() => {
+    addFakeRestaurantsAndReviews();
+  }, []);
+
   const user = useUserSession(initialUser);
 
   const handleSignOut = (event) => {
